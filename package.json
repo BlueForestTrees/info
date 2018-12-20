@@ -1,16 +1,16 @@
 {
-  "name": "api-template",
-  "version": "0.0.0",
-  "description": "XXX",
+  "name": "info",
+  "version": "0.0.1",
+  "description": "info allow to select products and produce a specific information based on it.",
   "main": "dist/index.js",
-  "repository": "https://github.com/BlueForestTrees/api-XXX.git",
+  "repository": "https://github.com/BlueForestTrees/info.git",
   "author": "slim <smedini@gmail.com>",
   "license": "MIT",
   "scripts": {
     "start": "node index.js",
     "build": "rimraf dist && babel src --out-dir dist/js && copyfiles etc/** dist",
-    "dev": "node --version && cross-env DEBUG=api:* PORT=XXX REST_PATH=src/rest nodemon src/index.js --exec babel-node",
-    "test": "cross-env DEBUG=api:*,test:* NODE_ENV=test PORT=XXX REST_PATH=src/rest mocha --recursive --require babel-register --exit \"test/**/*.js\""
+    "dev": "node --version && cross-env DEBUG=api:* PORT=8093 REST_PATH=src/rest nodemon src/index.js --exec babel-node",
+    "test": "cross-env DEBUG=api:*,test:* NODE_ENV=test PORT=9021 REST_PATH=src/rest mocha --recursive --require babel-register --exit \"test/**/*.js\""
   },
   "devDependencies": {
     "babel-cli": "6.26.0",
