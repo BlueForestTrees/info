@@ -1,4 +1,4 @@
-import {check, body, param} from 'express-validator/check'
+import {check, body} from 'express-validator/check'
 import {objectNoEx, object} from "mongo-registry"
 import {run} from "express-blueforest"
 import {decode} from "jsonwebtoken"
@@ -6,10 +6,13 @@ import {decode} from "jsonwebtoken"
 const debug = require('debug')(`api:info:validation`)
 
 export const X_ACCESS_TOKEN = "x-access-token"
-const axisTypes = ["facet", "impact", "root"]
+const fragmentTypes = ["facets", "impactsTank", "tank"]
+const types = ["eq", "alt", "comp", "gr"]
+const grandeursKeys = ["PNOF", "PDF", "DALY", "CTUh", "CTUe", "Ene1", "Ene2", "Dens", "Nomb", "Volu", "Duré", "Mass", "Surf", "Long", "Pri1", "Pri2", "Tran"]
 
+const grandeur = chain => chain.isIn(grandeursKeys).withMessage("should be Mass, Dens, Long, Tran...")
 
-export const validUser = run((o, req) => {
+export const validUser = (req, res, next) => {
     let token = decode(req.headers[X_ACCESS_TOKEN])
     if (!token || !token.user) {
         throwErr("Pas authentifié", "bf401")
@@ -19,11 +22,11 @@ export const validUser = run((o, req) => {
     if (debug.enabled) {
         debug({USER: req.user})
     }
-    return o
-})
+    next()
+}
 
 export const setUserIdIn = field => (o, req) => {
-    o[field] = req.user._id
+    o[field] = req.user && req.user._id
     return o
 }
 
@@ -35,30 +38,47 @@ export const validOwner = (col, field = "_id") => run(async (o, req) => {
             return o
         } else {
             debug("invalid owner user %o, doc %o", req.user._id, doc._id)
-            throwErr("invalid owner","bf403")
+            throwErr("invalid owner", "bf403")
         }
     } else {
         debug("doc not found user %o, doc %o", req.user._id, doc._id)
-        throwErr("doc not found","bf404")
+        throwErr("doc not found", "bf404")
     }
 })
 
+const number = chain => chain.exists().custom(v => !isNaN(Number.parseFloat(v))).withMessage("must be a valid number").customSanitizer(Number.parseFloat)
 const mongoId = chain => chain.exists().isMongoId().withMessage("invalid mongo id").customSanitizer(objectNoEx)
-export const validMongoId = field => mongoId(check(field))
-export const optionalMongoId = field => validMongoId(field).optional()
 
+export const validMongoId = field => mongoId(check(field))
 
 export const validId = validMongoId("_id")
 export const validOid = validMongoId("oid")
-export const validPath = check("path").exists().isLength({min: 1, max: 20}).optional()
-export const validLeftSelectionId = validMongoId("leftSelectionId").optional()
-export const validRightSelectionId = validMongoId("rightSelectionId").optional()
-export const validEquivId = validMongoId("equivId").optional()
-export const validAxisType = check("axisType").exists().isIn(axisTypes).withMessage("should be facet, impact, root").optional()
-export const validAxisId = validMongoId("axisId").optional()
+export const validType = check("type").exists().isIn(types).withMessage("should be eq, alt, gr or comp")
+export const validPath = check("path").exists().isLength({min: 1, max: 20})
+export const optionalValidEquivId = validMongoId("equivId").optional()
+export const optionalValidFragmentType = check("fragment.type").optional().exists().isIn(fragmentTypes).withMessage("should be facets, impactsTank, tank")
+export const optionalValidFragmentId = validMongoId("fragment._id").optional()
+export const optionalValidFragmentName = check("fragment.name").optional().exists().isLength({min: 1, max: 100})
+export const optionalValidDescription = check("description").exists().optional()
+export const optionalValidItemIds = validMongoId("items.*")
+
+
 
 const throwErr = (name, code) => {
     const e = new Error(name)
     e.code = code
     throw e
 }
+
+
+export const optionalValidSelection = field => [
+    mongoId(body(`${field}.trunkId`)).optional(),
+    grandeur(check(`${field}.quantity.g`)).optional(),
+    number(check(`${field}.quantity.bqt`)).optional(),
+    check(`${field}.repeted`).exists().isBoolean().optional(),
+    grandeur(check(`${field}.freq.g`)).optional(),
+    number(check(`${field}.freq.bqt`)).optional(),
+    grandeur(check(`${field}.duree.g`)).optional(),
+    number(check(`${field}.duree.bqt`)).optional(),
+    check(`${field}.name`).optional().exists().isLength({max: 30})
+]

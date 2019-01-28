@@ -6,12 +6,10 @@ import {
     setUserIdIn,
     validId,
     validPath,
-    validLeftSelectionId,
-    validRightSelectionId,
-    validEquivId,
+    optionalValidEquivId,
     validUser,
-    validAxisType,
-    validAxisId, validOwner
+    optionalValidFragmentType,
+    optionalValidFragmentId, validOwner, optionalValidSelection, optionalValidDescription, optionalValidFragmentName, optionalIds, validMongoId, optionalValidItemIds
 } from "../validations"
 
 const router = Router()
@@ -21,11 +19,14 @@ module.exports = router
 router.put("/api/info",
     validId,
     validPath,
-    validLeftSelectionId,
-    validRightSelectionId,
-    validEquivId,
-    validAxisType,
-    validAxisId,
+    optionalValidSelection("leftSelection"),
+    optionalValidSelection("rightSelection"),
+    optionalValidSelection("equivSelection"),
+    optionalValidFragmentType,
+    optionalValidFragmentId,
+    optionalValidFragmentName,
+    optionalValidDescription,
+    optionalValidItemIds,
     validUser,
     validOwner(col(ENV.DB_COLLECTION)),
     run(setUserIdIn("oid")),

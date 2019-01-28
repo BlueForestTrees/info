@@ -10,68 +10,15 @@ describe('info', function () {
 
     const info = {
         _id: createObjectId(),
+        type:"alt",
         path: "banane",
         leftSelectionId: createObjectId(),
         rightSelectionId: createObjectId(),
         equivId: createObjectId(),
-        axisType: "impact",
-        axisId: createObjectId(),
+        fragmentType: "impactsTank",
+        fragmentId: createObjectId(),
     }
     const infoWithOwner = {...info, oid: god._id}
-
-    it('PUT info bad auth', withTest({
-        db: {
-            preChange: {
-                colname: ENV.DB_COLLECTION,
-                doc: infoWithOwner
-            },
-            expected: {
-                colname: ENV.DB_COLLECTION,
-                doc: infoWithOwner
-            }
-        },
-        req: {
-            url: `/api/info`,
-            method: "PUT",
-            headers: authSimple,
-            body: {
-                ...info,
-                path: "other path!"
-            }
-        },
-        res: {
-            code: 403,
-            bodypath: [
-                {path: "errorCode", value: 3},
-                {path: "message", value: "Réservé au propriétaire ou au super-utilisateur."}
-            ]
-        }
-    }))
-
-    it('PUT info 1 field', withTest({
-        db: {
-            preChange: {
-                colname: ENV.DB_COLLECTION,
-                doc: {...info, oid: god._id}
-            },
-            expected: {
-                colname: ENV.DB_COLLECTION,
-                doc: {...info, oid: god._id, path: "other!"}
-            }
-        },
-        req: {
-            url: `/api/info`,
-            method: "PUT",
-            headers: authGod,
-            body: {
-                _id: info._id,
-                path: "other!"
-            }
-        },
-        res: {
-            body: {n: 1, nModified: 1, ok: 1}
-        }
-    }))
 
     it('PUT info', withTest({
         db: {
@@ -116,6 +63,35 @@ describe('info', function () {
         }
     }))
 
+    it('PUT info bad auth', withTest({
+        db: {
+            preChange: {
+                colname: ENV.DB_COLLECTION,
+                doc: infoWithOwner
+            },
+            expected: {
+                colname: ENV.DB_COLLECTION,
+                doc: infoWithOwner
+            }
+        },
+        req: {
+            url: `/api/info`,
+            method: "PUT",
+            headers: authSimple,
+            body: {
+                ...info,
+                path: "other path!"
+            }
+        },
+        res: {
+            code: 403,
+            bodypath: [
+                {path: "errorCode", value: 3},
+                {path: "message", value: "Réservé au propriétaire ou au super-utilisateur."}
+            ]
+        }
+    }))
+
     it('POST info no auth', withTest({
         req: {
             url: "/api/info",
@@ -126,8 +102,8 @@ describe('info', function () {
                 leftSelectionId: createStringObjectId(),
                 rightSelectionId: createStringObjectId(),
                 equivId: createStringObjectId(),
-                axisType: "impact",
-                axisId: createStringObjectId(),
+                fragmentType: "impact",
+                fragmentId: createStringObjectId(),
             }
         },
         res: {
@@ -160,13 +136,7 @@ describe('info', function () {
             url: "/api/info",
             method: "POST",
             body: {
-                _id: createStringObjectId(),
-                path: "banane",
-                leftSelectionId: createStringObjectId(),
-                rightSelectionId: createStringObjectId(),
-                equivId: createStringObjectId(),
-                axisType: "impact",
-                axisId: createStringObjectId(),
+                ...info,
             },
             headers: authGod
         },
