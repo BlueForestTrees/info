@@ -53,6 +53,10 @@ export const validMongoId = field => mongoId(check(field))
 
 export const validId = validMongoId("_id")
 export const validOid = validMongoId("oid")
+export const validOptionalOid = validMongoId("oid").optional()
+export const validOptionalQ = check('q').optional().exists().isLength({min: 1, max: 30})
+
+
 export const validType = check("type").exists().isIn(types).withMessage("should be eq, alt, gr or comp")
 export const validPath = check("path").exists().isLength({min: 1, max: 20})
 export const optionalValidEquivId = validMongoId("equivId").optional()
@@ -61,7 +65,6 @@ export const optionalValidFragmentId = validMongoId("fragment._id").optional()
 export const optionalValidFragmentName = check("fragment.name").optional().exists().isLength({min: 1, max: 100})
 export const optionalValidDescription = check("description").exists().optional()
 export const optionalValidItemIds = validMongoId("items.*")
-
 
 
 const throwErr = (name, code) => {
