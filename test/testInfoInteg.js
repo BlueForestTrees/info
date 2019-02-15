@@ -8,15 +8,38 @@ describe('info', function () {
 
     beforeEach(init(api, ENV, {INFO: ENV.DB_COLLECTION}))
 
+    const selection = ()=>({
+        trunkId: createObjectId(),
+        quantity: {
+            bqt: Math.random(),
+            g: "Mass"
+        },
+        repeted: true,
+        freq: {
+            bqt: Math.random(),
+            g: "Long"
+        },
+        duree: {
+            bqt: Math.random(),
+            g: "Dens"
+        },
+        name: "supername" + Math.random()
+    })
+
     const info = {
         _id: createObjectId(),
-        type:"alt",
+        type: "alt",
         path: "banane",
-        leftSelectionId: createObjectId(),
-        rightSelectionId: createObjectId(),
-        equivId: createObjectId(),
-        fragmentType: "impactsTank",
-        fragmentId: createObjectId(),
+        leftSelection: selection(),
+        rightSelection: selection(),
+        equivSelection: selection(),
+        fragment: {
+            type: "impactsTank",
+            _id: createObjectId(),
+            name: "super info",
+        },
+        description: "super info description",
+        items: [createObjectId(), createObjectId()]
     }
     const infoWithOwner = {...info, oid: god._id}
 
@@ -158,23 +181,6 @@ describe('info', function () {
         },
         res: {
             body: info
-        }
-    }))
-
-    it('GET info by owner', withTest({
-        db: {
-            preChange: {
-                colname: ENV.DB_COLLECTION,
-                doc: infoWithOwner
-            }
-        },
-        req: {
-            url: `/api/info/owner/${infoWithOwner.oid}`
-        },
-        res: {
-            body: [
-                infoWithOwner
-            ]
         }
     }))
 

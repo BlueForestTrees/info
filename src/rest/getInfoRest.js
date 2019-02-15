@@ -36,14 +36,7 @@ router.get("/api/info",
 
         if (oid !== undefined) filter.oid = oid
         if (q !== undefined) {
-            const termFilter = {$regex: new RegExp(`^.*${regexEscape(q)}.*`, "i")}
-            filter.$or = [
-                {path: termFilter},
-                {"fragment.name": termFilter},
-                {"leftSelection.name": termFilter},
-                {"rightSelection.name": termFilter},
-                {"equivSelection.name": termFilter}
-            ]
+            filter.$text = {$search: q}
         }
 
         return col(ENV.DB_COLLECTION)
