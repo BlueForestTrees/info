@@ -1,7 +1,7 @@
 import {Router, run} from "express-blueforest"
 import {col} from "mongo-registry"
 import ENV from "./../env"
-import {validId, validOptionalOid, validOptionalQ, validPath} from "../validations"
+import {mongoId, optionnalPageSize, validAidx, validId, validOptionalOid, validOptionalQ, validPath} from "../validations"
 import regexEscape from "regex-escape"
 
 const searchMixin = {projection: {path: 1, type: 1, "fragment.name": 1, "leftSelection.name": 1, "rightSelection.name": 1, "equivSelection.name": 1}}
@@ -29,19 +29,29 @@ router.get("/api/info/check/:path",
 router.get("/api/info",
     validOptionalOid,
     validOptionalQ,
-
-    run(({oid, q}) => {
+    validAidx,
+    optionnalPageSize,
+    run(({oid, q, aidx, ps}) => {
 
         const filter = {}
 
         if (oid !== undefined) filter.oid = oid
         if (q !== undefined) {
-            filter.$text = {$search: q}
+            const termFilter = {$regex: new RegExp(`^.*${regexEscape(q)}.*`, "i")}
+            filter.$or = [
+                {path: termFilter},
+                {description: termFilter},
+                {"fragment.name": termFilter},
+                {"leftSelection.name": termFilter},
+                {"rightSelection.name": termFilter},
+                {"equivSelection.name": termFilter}
+            ]
         }
 
         return col(ENV.DB_COLLECTION)
             .find(filter, searchMixin)
             .sort({_id: -1})
+            .limit(ps)
             .toArray()
     }),
 )

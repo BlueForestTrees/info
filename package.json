@@ -1,6 +1,6 @@
 {
   "name": "info",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "description": "info allow to select products and produce a specific information based on it.",
   "main": "dist/index.js",
   "repository": "https://github.com/BlueForestTrees/info.git",

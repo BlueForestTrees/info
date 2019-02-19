@@ -47,11 +47,12 @@ export const validOwner = (col, field = "_id") => run(async (o, req) => {
 })
 
 const number = chain => chain.exists().custom(v => !isNaN(Number.parseFloat(v))).withMessage("must be a valid number").customSanitizer(Number.parseFloat)
-const mongoId = chain => chain.exists().isMongoId().withMessage("invalid mongo id").customSanitizer(objectNoEx)
+export const mongoId = chain => chain.exists().isMongoId().withMessage("invalid mongo id").customSanitizer(objectNoEx)
 
 export const validMongoId = field => mongoId(check(field))
 
 export const validId = validMongoId("_id")
+export const validAidx = validMongoId("aidx").optional()
 export const validOid = validMongoId("oid")
 export const validOptionalOid = validMongoId("oid").optional()
 export const validOptionalQ = check('q').optional().exists().isLength({min: 1, max: 30})
@@ -84,4 +85,17 @@ export const optionalValidSelection = field => [
     grandeur(check(`${field}.duree.g`)).optional(),
     number(check(`${field}.duree.bqt`)).optional(),
     check(`${field}.name`).optional().exists().isLength({max: 30})
+]
+
+export const optionnalPageSize = [
+    (req, res, next) => {
+        if (!req.params.ps) {
+            req.params.ps = 10
+        }
+        next()
+    },
+    check("ps").isInt({
+        min: 1,
+        max: 30
+    }).withMessage(`must be an integer between 1 and 30 (default to ${10})`).toInt()
 ]
