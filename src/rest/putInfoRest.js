@@ -6,7 +6,6 @@ import {
     setUserIdIn,
     validId,
     validPath,
-    optionalValidEquivId,
     validUser,
     optionalValidFragmentType,
     optionalValidFragmentId, validOwner, optionalValidSelection, optionalValidDescription, optionalValidFragmentName, optionalIds, validMongoId, optionalValidItemIds
@@ -18,7 +17,7 @@ module.exports = router
 
 router.put("/api/info",
     validId,
-    validPath,
+    validPath.optional(),
     optionalValidSelection("leftSelection"),
     optionalValidSelection("rightSelection"),
     optionalValidSelection("equivSelection"),

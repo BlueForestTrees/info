@@ -6,7 +6,7 @@ import {decode} from "jsonwebtoken"
 const debug = require('debug')(`api:info:validation`)
 
 export const X_ACCESS_TOKEN = "x-access-token"
-const fragmentTypes = ["facets", "impactsTank", "tank"]
+const fragmentTypes = ["facet", "impactsTank", "tank"]
 const types = ["eq", "alt", "comp", "gr"]
 const grandeursKeys = ["PNOF", "PDF", "DALY", "CTUh", "CTUe", "Ene1", "Ene2", "Dens", "Nomb", "Volu", "Duré", "Mass", "Surf", "Long", "Pri1", "Pri2", "Tran"]
 
