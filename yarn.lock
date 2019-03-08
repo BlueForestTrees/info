@@ -1714,10 +1714,10 @@ expand-range@^1.8.1:
   dependencies:
     fill-range "^2.1.0"
 
-express-blueforest@1.0.21:
-  version "1.0.21"
-  resolved "https://registry.yarnpkg.com/express-blueforest/-/express-blueforest-1.0.21.tgz#0deae99c7497d612a04216e21d4d435e7aeaaffc"
-  integrity sha512-jxrlGjCrua+m0O3JBrFzLAvPTGfuL4ue51Gp9b9A5btUdLtXSz48k2tBNRsoucQdFPdqRo8yyOkbcWrXt+pHsw==
+express-blueforest@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/express-blueforest/-/express-blueforest-1.1.0.tgz#5234f7e10bb0e6d361567b071a6b3d52998498c2"
+  integrity sha512-ZjKcaTXiRMa+ESfzXI95w7FP2KE6EjcQT0SgHN145m58TVfBZnxwXt9uQ2lxQ+P5jE2x+yAQOfoDZWW+NNW3Pw==
   dependencies:
     body-parser "1.18.3"
     express "4.16.3"
@@ -4260,7 +4260,7 @@ regex-cache@^0.4.2:
   dependencies:
     is-equal-shallow "^0.1.3"
 
-regex-escape@^3.4.9:
+regex-escape@3.4.9:
   version "3.4.9"
   resolved "https://registry.yarnpkg.com/regex-escape/-/regex-escape-3.4.9.tgz#407b413562e2373d56994ff213e693658ea4f8f7"
   integrity sha512-Cv9rjwyQwVhn3L097ysanWsEElurmxDj6Cc4Ut23z7e6hzRbrNvF3Le7yAciMfuzyb0sZwSr0ZHunMNCIoy2/g==

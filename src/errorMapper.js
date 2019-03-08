@@ -6,7 +6,7 @@ export default err => {
         if (err.errmsg && err.errmsg.indexOf(`${PATH_IDX_NAME} dup key`) > -1) {
             err.body = {errorCode: 5, message: "path allready exists"}
         } else {
-            err.body = {errorCode: 1, message: "allready exists"}
+            err.body = {errorCode: 1, message: "L'élément existe déjà"}
         }
     } else if (err.code === 'bf403') {
         err.status = 403
