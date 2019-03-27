@@ -30,20 +30,25 @@ export const setUserIdIn = field => (o, req) => {
     return o
 }
 
+export const set = (field, clb) => o => {
+    o[field] = clb()
+    return o
+}
+
 export const validOwner = (col, field = "_id") => run(async (o, req) => {
     const doc = await col.findOne({_id: o[field]})
-    if (doc) {
-        if (req.user._id.equals(doc.oid)) {
-            debug("valid owner user %o, doc %o", req.user._id, doc._id)
-            return o
-        } else {
-            debug("invalid owner user %o, doc %o", req.user._id, doc._id)
-            throwErr("invalid owner", "bf403")
-        }
-    } else {
-        debug("doc not found user %o, doc %o", req.user._id, doc._id)
-        throwErr("doc not found", "bf404")
-    }
+    const validOwner =
+        (!doc && "no doc")
+        ||
+        (req.user._id.equals(doc.oid) && "owner")
+        ||
+        (req.user.rights && req.user.rights.charAt(0) === 'G' && "god")
+
+    debug('{validOwner:{_id:"%s", oid:"%s", validity:"%s"}}', o[field], req.user._id, validOwner)
+
+    validOwner || throwErr("Non autorisé", "bf403")
+
+    return o
 })
 
 const number = chain => chain.exists().custom(v => !isNaN(Number.parseFloat(v))).withMessage("must be a valid number").customSanitizer(Number.parseFloat)
@@ -53,6 +58,7 @@ export const validMongoId = field => mongoId(check(field))
 
 export const validId = validMongoId("_id")
 export const validAidx = validMongoId("aidx").optional()
+export const validADate = check("adate").optional().isISO8601()
 export const validOid = validMongoId("oid")
 export const validOptionalOid = validMongoId("oid").optional()
 export const validOptionalQ = check('q').optional().exists().isLength({min: 1, max: 30})

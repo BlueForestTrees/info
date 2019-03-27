@@ -8,7 +8,7 @@ import {
     validPath,
     validUser,
     optionalValidFragmentType,
-    optionalValidFragmentId, validOwner, optionalValidSelection, optionalValidDescription, optionalValidFragmentName, optionalIds, validMongoId, optionalValidItemIds
+    optionalValidFragmentId, validOwner, optionalValidSelection, optionalValidDescription, optionalValidFragmentName, optionalIds, validMongoId, optionalValidItemIds, set
 } from "../validations"
 
 const router = Router()
@@ -29,5 +29,6 @@ router.put("/api/info",
     validUser,
     validOwner(col(ENV.DB_COLLECTION)),
     run(setUserIdIn("oid")),
+    run(set("date", () => new Date())),
     run(info => col(ENV.DB_COLLECTION).updateOne({_id: info._id}, {$set: info}).then(resp => resp.result))
 )

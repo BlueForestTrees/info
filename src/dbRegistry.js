@@ -17,5 +17,10 @@ export const registry = [
             "rightSelection.name": 1,
             "equivSelection.name": 1,
         }, {name: "searchIDX"})
+    },
+    {
+        version: "0.1.2",
+        log: "search (date) IDX",
+        script: () => col(ENV.DB_COLLECTION).createIndex({date:-1,}, {name: "searchDateIDX"})
     }
 ]
