@@ -1,5 +1,6 @@
 const debug = require('debug')('api:info')
 import {version, name} from './../package.json'
+import fs from "fs"
 
 const throwit = message => {
     throw message
@@ -20,7 +21,11 @@ const ENV = {
     DB_COLLECTION: process.env.DB_COLLECTION || "info",
 
     NODE_ENV: process.env.NODE_ENV || null,
-    VERSION: version
+    VERSION: version,
+
+    RK_INFO_UPSERT: process.env.RK_INFO_UPSERT || "info-upsert",
+    RK_INFO_DELETE: process.env.RK_INFO_DELETE || "info-delete",
+    RB_PATH: process.env.RB_PATH || "mq.json"
 }
 
 if (ENV.DB_CONNECTION_STRING) {
@@ -31,10 +36,14 @@ if (ENV.DB_CONNECTION_STRING) {
     delete ENV.DB_USER
 }
 
+ENV.RB = JSON.parse(fs.readFileSync(ENV.RB_PATH, 'utf8'))
+
+
 if (debug.enabled) {
     debug({ENV})
 } else {
     console.log(JSON.stringify(ENV))
 }
+
 
 export default ENV

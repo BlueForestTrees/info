@@ -1,6 +1,7 @@
 import {Router, run} from "express-blueforest"
 import {col} from "mongo-registry"
 import ENV from "./../env"
+import {createSender} from "simple-rbmq"
 
 import {
     setUserIdIn,
@@ -30,5 +31,5 @@ router.put("/api/info",
     validOwner(col(ENV.DB_COLLECTION)),
     run(setUserIdIn("oid")),
     run(set("date", () => new Date())),
-    run(info => col(ENV.DB_COLLECTION).updateOne({_id: info._id}, {$set: info}).then(resp => resp.result))
+    run(createSender(ENV.RB.exchange, ENV.RK_INFO_UPSERT))
 )
