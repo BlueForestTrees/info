@@ -1,6 +1,6 @@
 {
   "name": "info",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "info allow to select products and produce a specific information based on it.",
   "main": "dist/index.js",
   "repository": "https://github.com/BlueForestTrees/info.git",
@@ -39,7 +39,7 @@
     "lodash": "4.17.10",
     "mongo-registry": "1.0.20",
     "regex-escape": "3.4.9",
-    "simple-rbmq": "^1.0.23"
+    "simple-rbmq": "2.0.2"
   },
   "babel": {
     "presets": [
