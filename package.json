@@ -39,7 +39,7 @@
     "lodash": "4.17.10",
     "mongo-registry": "1.0.20",
     "regex-escape": "3.4.9",
-    "simple-rbmq": "2.0.2"
+    "simple-rbmq": "2.0.6"
   },
   "babel": {
     "presets": [
