@@ -1694,7 +1694,7 @@ etag@~1.8.1:
 
 event-stream@~3.3.0:
   version "3.3.4"
-  resolved "http://registry.npmjs.org/event-stream/-/event-stream-3.3.4.tgz#4ab4c9a0f5a54db9338b4c34d86bfce8f4b35571"
+  resolved "https://registry.npmjs.org/event-stream/-/event-stream-3.3.4.tgz#4ab4c9a0f5a54db9338b4c34d86bfce8f4b35571"
   dependencies:
     duplexer "~0.1.1"
     from "~0"
@@ -2959,9 +2959,14 @@ lodash.without@~4.4.0:
   resolved "https://registry.yarnpkg.com/lodash.without/-/lodash.without-4.4.0.tgz#3cd4574a00b67bae373a94b748772640507b7aac"
   integrity sha1-PNRXSgC2e643OpS3SHcmQFB7eqw=
 
-lodash@4.17.10, lodash@^4.17.10, lodash@^4.17.4:
+lodash@4.17.10:
   version "4.17.10"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.10.tgz#1b7793cf7259ea38fb3661d4d38b3260af8ae4e7"
+
+lodash@4.17.21, lodash@^4.17.10, lodash@^4.17.4:
+  version "4.17.21"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
+  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
 
 lodash@4.17.5:
   version "4.17.5"
@@ -4563,10 +4568,10 @@ signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
 
-simple-rbmq@2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/simple-rbmq/-/simple-rbmq-2.0.2.tgz#3d87d3837f8e59b72159fa6d4577cd7ab979dfe0"
-  integrity sha512-5sv7DAhrsq3APcWgXqCCvlXpSkkiWkPyMbg5sBJOhjiNhtMGwYgpWt/rExg5QnxHeYaeM0hpc9au37LHk11mew==
+simple-rbmq@2.0.6:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/simple-rbmq/-/simple-rbmq-2.0.6.tgz#908ff661eff2e646558c67650c9deaf482eb407d"
+  integrity sha512-zbnJtoAT/i8xk5AEhJZcoMjvvU+lLbczTRxzrIRQYzVDJS+WNnNtTa38Ce2kNPy9c4B8KcW8X2wRS7WegGKbLQ==
   dependencies:
     amqp-connection-manager "2.3.1"
     amqplib "0.5.3"
